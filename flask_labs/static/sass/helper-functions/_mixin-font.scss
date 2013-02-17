@@ -1,0 +1,79 @@
+// _mixin-font.scss
+// ----------------
+
+// /* ---------------------------------------------------------------------------------------------------------------------------------------
+//  |  Requires *IE* @font-face declarations to be written as such:
+//  |
+//  |  // Book
+//  |  @font-face {
+//  |      font-family: 'FreightSans-n-n';
+//  |      src: url('/assets/fonts/FreightSans/24691F_8_0.eot');
+//  |      src: url('/assets/fonts/FreightSans/24691F_8_0.eot?#iefix') format('embedded-opentype');
+//  |  }
+//  |
+//  |
+//  |  The font-family has a suffix.
+//  |   - The first suffix is represents the font weight:
+//  |        * l  =  Light
+//  |        * n  =  Normal
+//  |        * m  =  Medium
+//  |        * b  =  Bold
+//  |        * bl =  Balck
+//  |
+//  |   - The second suffix represents the font style:
+//  |       * n  =  Normal
+//  |       * i  =  Italic
+//  |
+//  |
+//  |  Requires the following variables to be set in the config.scss / variables.scss file (don't wrap font names in quotes)
+//  |
+//  |     $base-font-stack:              FreightSans; // the single font-family as opposed to the full stack
+//  |     $base-font-backup:       Helvetica, Arial, sans-serif;  // the backup to the $base-font-stack
+//  |
+//  | --------------------------------------------------------------------------------------------------------------------------------------- */
+
+
+%base-font {
+    $font-family: $base-font;
+}
+
+
+@mixin font(
+    $font-family: false,  // defaults to $base-font-stack
+    $font-weight: false,  // defaults to $base-font-weight
+    $font-style: false
+    ){
+
+    @if $font-family {
+        font-family: $font-family, $base-font-backup;
+    }
+
+    @if $font-weight {
+        font-weight: $font-weight;
+    }
+    @if $font-style {
+        font-style: $font-style;
+    }
+
+    .ie6 &,
+    .ie7 &,
+    .ie8 & {
+        $suffix-1: 'm';  // default medium
+        $suffix-2: 'n';
+
+        @if $font-weight {
+            @if $font-weight == 300 { $suffix-1: '300'; }
+            @else if $font-weight == 400 { $suffix-1: '400'; }
+            @else if $font-weight == 600 { $suffix-1: '600'; }
+            @else if $font-weight == 700 { $suffix-1: '700'; }
+            @else if $font-weight == 900 { $suffix-1: '900'; }
+        }
+
+        @if $font-style and $font-style == 'oblique' or $font-style == 'italic' {
+            $suffix-2: 'Italic';
+        }
+        font-weight: normal;
+
+        font-family: $font-family + '-' + $suffix-1 + '-' + $suffix-2 + ', ' + $base-font-backup;
+    }
+}

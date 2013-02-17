@@ -1,0 +1,6 @@
+{% for section in g.sections -%}
+    <li class="site_nav_item{% if section == current_section %} current{% endif %}">
+        <a class="site_nav_link" href="{{ url_for('section', section_slug=section.slug) }}">{{ section.name }}</a>
+    </li>
+{%- endfor %}
+    <li class="site_nav_item"><a class="site_nav_link" href="/post/michael-mcgahan">Resum&eacute;</a></li>

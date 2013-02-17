@@ -1,0 +1,85 @@
+{% extends "sub.html" %}
+{% block home_logo %}{% endblock %}
+{% block content %}
+<div class="grid_row">
+    <div class="twocol" id="sidebar">
+        <h1>Instructions:</h1>
+        <p>After you've purchased one of the books, you can click the checkbox in the "Gifted" column, which will lock it. Once it has been locked, it cannot be unlocked, so make sure you are ready to take it off the registry! Thank you!</p>
+
+    </div>
+    <article class="ninecol last">
+        <header>
+            <div id="flash">
+                {% for message in get_flashed_messages() -%}
+                    <span class="message">{{ message }}</span>
+                {%- endfor %}
+            </div>
+            <h1 id="title">Claire and Mike</h1>
+            <div class="subtitle">Wedding registry</div>
+        </header>
+        <div id="copy">
+            <p>We are hoping that you will be able to join us in New Zealand, and would like you to consider that as your gift to us. We realize it is a major commitment for many of you and we are looking forward to sharing the day with everyone. If you feel compelled to bring/send a gift, we'd love for you to contribute to our growing library with the books we've listed below.</p>
+            <p>Hardback editions are preferred, but not necessary, and if there's something special that you would like to give that is not on the list, feel free to get creative!</p>
+            {% if g.current_user.is_admin %}
+            <h2>Add a book</h2>
+            <form action="{{ url_for('registry') }}" method="POST">
+                {{ registry_form.book_title.label }}
+                {{ registry_form.book_title }}
+                {{ registry_form.book_author.label }}
+                {{ registry_form.book_author }}
+                {{ registry_form.is_special.label }}
+                {{ registry_form.is_special }}
+                {{ registry_form.item_notes.label }}
+                {{ registry_form.item_notes(rows="5") }}
+                {{ registry_form.submit }}
+            </form>
+            {% endif %}
+            <table cellpadding="0" cellspacing="0" border="0" class="big-table" id="registry-normal">
+                <thead>
+                    <tr>
+                        <th class="book-title">Title</th>
+                        <th class="book-author">Author</th>
+                        <th>Gifted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in registry_items['normal'] %}
+                    <tr class="item {% if item.bought %}bought{% endif %}"/>
+                        <td>{{ item.book_title }}</td>
+                        <td>{{ item.book_author }}</td>
+                        <td class="center">
+                            <input class="buy-item" data-id="{{ item.id }}" type="checkbox" {% if item.bought %}checked="checked" disabled="disabled"{% endif %}/>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <p>Despite owning later editions of some of these books, we'd love to have earlier editions of those listed below. Please check with us if you're not sure about any of them. <a href="http://abebooks.com">AbeBooks.com</a> is a good resource for finding many of these books online.</p>
+            <table cellpadding="0" cellspacing="0" border="0" class="big-table" id="registry-special">
+                <thead>
+                    <tr>
+                        <th class="book-title">Title</th>
+                        <th class="book-author">Author</th>
+                        <th class="item-notes">Notes</th>
+                        <th>Gifted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in registry_items['special'] %}
+                    <tr class="item {% if item.bought %}bought{% endif %}"/>
+                        <td>{{ item.book_title }}</td>
+                        <td>{{ item.book_author }}</td>
+                        <td>{{ item.item_notes }}</td>
+                        <td class="center">
+                            <input class="buy-item" data-id="{{ item.id }}" type="checkbox" {% if item.bought %}checked="checked" disabled="disabled"{% endif %}/>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</div>
+{% endblock %}
+{% block footer %}{% endblock %}

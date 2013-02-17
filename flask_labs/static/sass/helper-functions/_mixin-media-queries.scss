@@ -1,0 +1,156 @@
+//_media-queries.scss
+// -------------------------------------------------------------
+
+// use-old-ie targets IE8 and below based on the conditional
+// comment classes in the root of the HTML document.
+
+// -------------------------------------------------------------
+
+$media-breakpoints:
+(
+    (
+        mobile-only,
+        (
+            query "screen and (max-width: 38.5em)",
+            polyfill-unsupported-browsers false
+        )
+    ),
+    (
+        mobile-skinny-only,
+        (
+            query "screen and (max-width: 26em)",
+            polyfill-unsupported-browsers false
+        )
+    ),
+    (
+        large-mobile-only,
+        (
+            query "screen and (min-width: 26em) and (max-width: 38.5em)",
+            polyfill-unsupported-browsers false
+        )
+    ),
+    (
+        skinny-up,
+        (
+            query "screen and (min-width: 38.51em)",
+            polyfill-unsupported-browsers true
+        )
+    ),
+    (
+        skinny-only,
+        (
+            query "screen and (min-width: 38.51em) and (max-width: 60.49em)",
+            polyfill-unsupported-browsers false
+        )
+    ),
+    (
+        skinny-down,
+        (
+            query "screen and (max-width: 60.49em)",
+            polyfill-unsupported-browsers false
+        )
+    ),
+    (
+        desktop-up,
+        (
+            query "screen and (min-width: 60.5em)",
+            polyfill-unsupported-browsers true
+        )
+    ),
+    (
+        desktop-only,
+        (
+            query "screen and (min-width: 60.5em) and (max-width: 76em)",
+            polyfill-unsupported-browsers false
+        )
+    ),
+    (
+        wide,
+        (
+            query "screen and (min-width: 72em)",
+            polyfill-unsupported-browsers false
+        )
+    ),
+    (
+        retina,
+        (
+            query "screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2)",
+            polyfill-unsupported-browsers false
+        )
+    )
+);
+
+
+// -------------------------------------------------------------
+
+@mixin media(
+    $context: mobile,
+    $polyfill-unsupported-browsers: true
+) {
+    $use-polyfill: false;
+    $query: "only ";
+    $error: true;
+
+    @each $point in $media-breakpoints {
+        @if $context == nth($point, 1) {
+            $error:         false;
+            $features:      nth($point, 2);
+
+            $new-query:     nth( nth($features, 1), 2);
+            $use-polyfill:    nth( nth($features, 2), 2);
+
+            $query: $query + $new-query;
+
+            @media #{$query} {
+                @content;
+            }
+
+            @if($polyfill-unsupported-browsers == true and $use-polyfill == true) {
+                .no_media_queries & {
+                    @content;
+                }
+            }
+        }
+    }
+
+    // Debug
+    @if( $error == true) {
+        &:before {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            display: block;
+            color: #fff;
+            background: red;
+            padding: 0.5em 1em;
+            content: "You've called a media query '#{$context}' that doesn't exist. Please check again";
+        }
+    }
+}
+
+
+// -------------------------------------------------------------
+
+@function return-media-query( $name ){
+    $query: false;
+    @each $breakpoint in $media-breakpoints {
+
+        @if nth($breakpoint, 1) == $name {
+            $features:  nth($breakpoint, 2);
+            $new-query: nth( nth($features, 1), 2);
+
+            $query: 'only ' + $new-query;
+        }
+    }
+
+    @if $query != false {
+
+        @return $query;
+
+    } @else {
+
+        @return '[insert media query here]';
+
+    }
+}

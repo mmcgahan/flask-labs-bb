@@ -1,0 +1,35 @@
+// _slides.scss
+// ------------
+$mobile_img_width: 284px;
+
+%slide-direction-button {
+    display: block;
+    position: absolute;
+    top: 20em;  // this will probably have to be adjusted
+    width: 42px;
+    height: 96px;
+    background-color: $gray-dark;
+    background-color: rgba(32,32,32,0.3);
+    text-indent: -999em;
+    outline: none;
+    &:hover {
+        opacity: 1;
+    }
+    &.disabled {
+        display: none;
+    }
+}
+.slider_controls {
+    position: relative;
+    z-index: 10;
+}
+#slide_next {
+    // @include background-sprite('base', 'arrow-right-white', $offset-x: 10px);
+    @extend %slide-direction-button;
+    right: 0;
+}
+#slide_prev {
+    // @include background-sprite('base', 'arrow-left-white');
+    @extend %slide-direction-button;
+    left: 0;
+}

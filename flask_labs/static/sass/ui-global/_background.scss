@@ -1,0 +1,103 @@
+// _background.scss
+// ----------------
+
+// Use this mixin to apply a set of colors to the hero banner and featured
+// elements (e.g. the large stats or headings on the Case Study pages).
+// Apply it to a body class, e.g. '.nzfestival'
+
+%bg-noise {
+    background-image: url('/static/images/texture/noise-96-subtle.png');  // a new noise image (more subtle)
+}
+
+%bg-noise-heavy {
+    background-image: url('/static/images/texture/noise-96.png');
+}
+
+@mixin bg-color(
+        $bg-color: $black,
+        $text-color: $white,
+        $link-color: false,
+        $add-noise: true,
+        $heavy-noise: false
+    ) {
+    // bg-color mixin works in conjunction with bg-noise
+
+    @if (not $link-color) {
+        $link-color: $text-color;
+    }
+
+    @if ($add-noise) {
+        @if ($heavy-noise) {
+            @extend %bg-noise-heavy;
+        } @else {
+            @extend %bg-noise;
+        }
+    }
+
+    background-color: $bg-color;
+
+    @if ($text-color == $white) {
+        -webkit-font-smoothing: antialiased;
+    }
+
+    color: $text-color;
+    a {
+        color: $link-color;
+        &:hover {
+            // this default means you don't have to specify a hover
+            // color as a mixin parameter
+            color: darken($link-color, 10%);
+        }
+    }
+}
+
+
+%bg-blank {
+    zoom: 1;  // nothing happens
+}
+%bg-white {
+    background-color: $white;
+    color: $black;
+}
+%bg-gray {
+    @include bg-color(
+        $bg-color: $gray-lightest, $text-color: $black);
+}
+%bg-gray-darker {
+    @include bg-color(
+        $bg-color: $gray-lighter, $text-color: $black);
+}
+%bg-black {
+    @include bg-color($bg-color: $black-trans);
+}
+%bg-fuschia {
+    @include bg-color($bg-color: $fuschia);
+}
+%bg-purple {
+    @include bg-color($bg-color: $purple, $link-color: $light-blue);
+}
+%bg-aqua {
+    @include bg-color($bg-color: $aqua, $heavy-noise: true);
+}
+%bg-navy {
+    @include bg-color($bg-color: $navy, $link-color: $light-blue);
+}
+%bg-green {
+    @include bg-color($bg-color: $light-green);
+}
+%bg-dark-teal {
+    @include bg-color($bg-color: $dark-teal, $link-color: $light-blue);
+}
+%bg-light-teal {
+    @include bg-color($bg-color: $light-teal, $text-color: $black, $link-color: $dark-teal);
+    h2 {
+        @include bg-color($bg-color: $light-teal, $text-color: $dark-teal, $link-color: $dark-teal);
+    }
+}
+%bg-red {
+    @include bg-color($bg-color: $red)
+}
+%bg-bright-blue {
+    @include bg-color($bg-color: darken($bright-blue, 5%))
+}
+

@@ -1,0 +1,114 @@
+// _layout.scss
+// ------------
+
+// Vertical rhythm
+$hero-vertical-space: 2.8em;
+$hero-vertical-space-mobile: 1.8em;
+
+$section-vertical-space: 4em;
+$section-vertical-space-mobile: 3em;
+
+
+// Layout
+$header-height: 60px;
+$grid-full-width-max-width: 1140px;
+
+$nav-height-skinny: 55px;
+$nav-height-mobile: 445px;
+$header-feature-height: 458px;
+$header-feature-skinny: $header-feature-height - $nav-height-skinny;
+$header-feature-mobile: $header-feature-height - $nav-height-mobile;
+
+
+
+#site_nav {
+    z-index: 1; // to keep the links clickable;
+    // @include transition(transform 0.3s ease-in-out);
+
+    // @include media('desktop-up') {
+    //     .header_feature_active & {
+    //         @include transform(translate3d(0, #{$header-feature-height}, 0)); // height of nav
+    //     }
+    // }
+
+    // @include media('skinny-only') {
+    //     @include transform(translate3d(0, -#{$nav-height-skinny}, 0)); // height of nav
+    // }
+
+
+    // @include media ('skinny-down') {
+    //     .nav_active & {
+    //         @include transform(translate3d(0, 0, 0));
+    //     }
+    // }
+
+
+    // @include media('mobile-only') {
+    //     @include transform(translate3d(0, -#{$nav-height-mobile}, 0)); // height of nav
+    // }
+
+    // .no-js & {
+    //     position: static;
+    //     display: table-footer-group;
+    //     @include transform(translate3d(0, 0, 0));
+    // }
+}
+
+
+
+.page_wrapper {
+
+    @include transition(transform 0.3s ease-in-out);
+
+    @include media('skinny-up') {
+        @include transform(translate3d(0, -#{$header-feature-height}, 0)); // hide the bio
+        .header_feature_active & {
+            @include transform(translate3d(0, 0, 0));
+        }
+    }
+
+    @include media ('skinny-only') {
+        .nav_active & {
+            @include transform(translate3d(0, -#{$header-feature-skinny}, 0)); // negative height of bio minus height of nav
+        }
+    }
+
+
+    @include media ('mobile-only') {
+        @include transform(translate3d(0, 0, 0));
+        .nav_active & {
+            @include transform(translate3d(0, #{$nav-height-mobile}, 0)); // height of nav
+        }
+    }
+
+    .no-js & {
+        display: table-header-group;
+        @include transform(translate3d(0, 0, 0));
+    }
+}
+
+header {
+    margin: $section-vertical-space 0 0;
+}
+
+section {
+    margin: $section-vertical-space 0;
+}
+
+%centered_horiz_list {
+    text-align: center;
+}
+%centered_horiz_list_item {
+    display: inline-block;
+}
+%centered {
+    text-align: center;
+}
+.right {
+    float: right;
+}
+.left {
+    float: left;
+}
+
+

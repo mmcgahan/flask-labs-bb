@@ -1,0 +1,69 @@
+<!DOCTYPE html />
+<html>
+    <head>
+        <title>{% block title %}MWM Labs{% endblock %} | Michael McGahan</title>
+        {% block styles -%}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+        {%- endblock styles %}
+        {% block scripts %}
+        {# <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script> #}
+        <script data-main="{{ url_for('static', filename='js/script.js') }}" src="{{ url_for('static', filename='js/vendor/require.js') }}"></script>
+        {% block scripts_add -%}{%- endblock scripts_add %}
+        {% endblock scripts %}
+        {% block analytics %}
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-33245660-1']);  {# should change this to flask middleware/g variable #}
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+        {% endblock %}
+    </head>
+    <body class="{% block body_type %}{% endblock %}">
+        {% block body -%}
+        <div class="grid_container" id="body_insert">
+            {% block navbar -%}
+            <div class="grid_row" id="header">
+                <div id="home_logo" class="grid_col_6">
+                    {% block home_logo %}
+                    <div class="logo"><h1 id='logo_heading'>Michael McGahan - MWM Labs</h1></div>
+                    {% endblock %}
+                </div>
+                <div class="grid_col_6">
+                    <ul id="site_nav">
+                        {% include "partials/_nav-li.html" %}
+                    </ul>
+                </div>
+            </div>
+            {%- endblock %}
+            {% block content -%}
+            {% block hero %}
+            {% endblock %}
+            {% block primary_content %}
+            <div id="body" class="grid_row">
+
+            </div>
+            {% endblock %}
+            {%- endblock %}
+
+            {% block footer -%}
+            <div class="grid_row" id="footer">
+                <div class="grid_col_12">
+                    <ul id="footer_nav">
+                        {% include "partials/_nav-li.html" %}
+                    </ul>
+                </div>
+            </div>
+            {%- endblock %}
+        </div>
+        {%- endblock %}
+    </body>
+</html>

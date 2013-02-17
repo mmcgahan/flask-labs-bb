@@ -1,0 +1,70 @@
+// _base.scss
+// -------------------------------------------------------------
+
+// /*
+//  * 1. Correct text resizing oddly in IE6/7 when body font-size is set using em units
+//  * 2. Prevent iOS text size adjust on device orientation change, without disabling user zoom: h5bp.com/g
+//  */
+
+// Default base classes to extend
+
+
+html {
+    font-family: 'mobile'; // for js media queries
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    @extend %text-color-base;
+    background-color: $color-bg;
+    background: url("images/white_fabric.png") repeat;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+#body_insert {
+    @extend %bg-white;
+}
+
+// /* elements to display using border-box method */
+//article, aside, details, div, figcaption, figure, footer, header, hgroup, nav, section { @include box-sizing(border-box); }
+
+// /*
+//  * Remove text-shadow in selection highlight: h5bp.com/i
+//  * These selection declarations have to be separate
+//  * Also: hot pink! (or customize the background color to match your design)
+//  */
+
+::-moz-selection { background: $color-selection-bg; color: $color-selection-text; text-shadow: none; }
+::selection { background: $color-selection-bg; color: $color-selection-text; text-shadow: none; }
+
+
+
+// /* Embedded content
+//  * ========================================================================== */
+
+// /*
+//  * 1. Improve image quality when scaled in IE7: h5bp.com/d
+//  * 2. Remove the gap between images and borders on image containers: h5bp.com/i/440
+//  */
+
+img {
+    max-width: 100%;
+    border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle;
+    filter: 0;
+}
+
+// /*
+//  * Correct overflow not hidden in IE9
+//  */
+
+svg:not(:root) { overflow: hidden; }
+
+
+// /* Lists
+//  * ========================================================================== */

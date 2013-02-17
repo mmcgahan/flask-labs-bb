@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body -%}
+<div class="dialog">
+    <h1 class="ui-widget-header">Please log in</h1>
+    <div class="panel">
+        <form method="POST" action="{{ url_for('login') }}">
+            {{ login_form.hidden_tag() }}
+            {{ login_form.username.label }}
+            {{ login_form.username(autofocus="autofocus") }}
+            {{ login_form.raw_password.label }}
+            {{ login_form.raw_password }}
+            <div class="clear"></div>
+            {{ login_form.submit(class="button") }}
+        </form>
+    </div>
+</div>
+{%- endblock %}

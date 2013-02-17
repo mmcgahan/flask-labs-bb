@@ -1,0 +1,51 @@
+// _hero.scss
+// ----------
+
+@mixin hero($image-height: 30em, $bg-color: 'gray', $template: 'mixed') {
+    // Only necessary for changing hero bg:
+    // @include transform(translate3d(0,0,0));
+    // @include transition-property(background-color);
+    // @include transition-duration(300ms);
+    // @include transition-timing-function(ease);
+    -webkit-backface-visibility: hidden;
+
+    @extend %hero-content;
+    @extend %bg-#{ $bg-color };
+    .hero_images {
+        @if $template == 'mixed' {
+            // fixed height
+            height: $image-height;
+            .hero_main_img {
+                position: absolute;
+                margin-top: 1em;
+                bottom: 0;
+            }
+        }
+        @include media('wide') {
+            height: $image-height;
+        }
+    }
+}
+%hero-content {
+    position: relative;
+    padding: 1em 1.5em;
+    border: solid $gray-lighter;
+    border-width: 1px 0;
+}
+#hero {
+    background-size: 100%;
+    background-repeat: no-repeat;
+    position: relative;
+    // @include hero;
+}
+#hero_content {
+    @extend %hero-content;
+    @extend %bg-white;
+}
+@include media ('skinny-down') {
+    .hero {
+        padding-top: 0;
+    }
+}
+@include media('mobile-only') {
+}

@@ -1,0 +1,215 @@
+// _grid.scss
+// -------------------------------------------------------------
+
+
+@mixin column-offset(
+    $grid-name,
+    $num-columns,
+    $direction
+    ){
+    $column-width: return-grid-settings( $grid-name, 'column-width' );
+    $gutter-width: return-grid-settings( $grid-name, 'gutter-width' );
+    $row-width: return-grid-settings( $grid-name, 'row-width-inner' );
+    $current-column-width: $num-columns * $column-width + ($gutter-width * $num-columns);
+    $offset: percentage-round( $current-column-width / $row-width );
+
+    margin-#{$direction}: #{$offset};
+}
+
+
+// Define the grids
+// ----------------
+
+@include define-grid-settings(
+    $grid-name: 'full_width',
+    $column-width: 35,
+    $gutter-width: 60,
+    $num-columns: 12,
+    $padding-left: 1.5em,
+    $padding-right: 1.5em,
+    $breakpoints: (
+        (
+            query return-media-query(wide),
+            padding-left 2.6em,
+            padding-right 2.6em
+        ),
+        (
+            query return-media-query(desktop-up),
+            width $grid-full-width-max-width,
+            apply-to-browsers-w/o-media-queries true
+        ),
+        (
+            query return-media-query(skinny-only),
+            width 100%,
+            padding-left 1em,
+            padding-right 1em
+        ),
+        (
+            query return-media-query(mobile-only),
+            width 100%,
+            padding-left 0.5em,
+            padding-right 0.5em
+        )
+    )
+);
+
+
+
+@include define-grid-settings(
+    $grid-name: 'three_quarters',
+    $column-width: 58,
+    $gutter-width: 50,
+    $num-columns: 9,
+    $padding-left: 0,
+    $padding-right: 0
+);
+
+
+// Apply the grids
+// ---------------
+
+@include apply-grid(
+    $use-grid: 'full_width',
+    $container-selector: '.grid_container',
+    $row-selector: '.grid_row',
+    $row-extend-selectors: '%grid_row',
+    $column-extend-selectors: '%grid_col' '%mobile_col',
+    $break-columns: (
+        (
+         breakpoint 4,
+         selector '%mobile_col',
+         columns 12
+        )
+    )
+);
+
+
+
+// this grid uses up 3/4 of the 12 column grid, so inner columns
+// can be nested within a 9-column (3/4) container
+//
+// EXAMPLE:
+//
+// <div class='grid_row_12'>           <!-- normal full_width row -->
+//     <div class='grid_col_9'>        <!-- three quarter column container -->
+//         <div class='grid_row_9'>    <!-- ooh...that's different -->
+//             <div class='grid_col_3'>I will line up nicely with the full_width (outer) grid!</div>
+//         </div>
+//     </div>
+// </div>
+
+@include apply-grid(
+    $use-grid: 'three_quarters',
+    $container-selector: '.grid_container_quarter',
+    $row-selector: '.grid_row_9_inner',
+    $row-extend-selectors: '%grid_row' '%grid_row_9_inner',
+    $column-extend-selectors: '%grid_col' '%mobile_col'
+);
+
+// -------------------------------------------------------------
+
+
+
+// Default styles for grid elements
+// --------------------------------
+
+.grid_container {
+    @include clearfix;
+    margin-left: auto;
+    margin-right: auto;
+}
+.grid_spacer {
+    padding: 1px 0;
+}
+
+%grid_row{
+    @include clearfix;
+    .no_haslayout &{ // Fixing clearfix for IE6 and IE7
+        clear: both;
+    }
+}
+
+%grid_col {
+    float: left;
+    @if $grid-debug == true {
+        position: relative;
+        min-height: 100px;
+        background-color: #ddf6ff;
+        &:before,
+        &:after{
+            content: "";
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            background-color: darken(#ddf6ff,5%);
+            width: 1px;
+        }
+        &:after{
+            font-size: 11px;
+            line-height: 1em;
+            left: 0;
+            white-space: nowrap;
+        }
+        &:before{
+            right: 0;
+        }
+    }
+}
+
+%grid_row_9_inner {
+    margin: {
+        left: -#{ percentage-round( return-grid-settings( 'three_quarters', 'padding-left' ) / return-grid-settings( 'three_quarters', 'row-width-inner' ) ) };
+        right: -#{ percentage-round( return-grid-settings( 'three_quarters', 'padding-right' ) / return-grid-settings( 'three_quarters', 'row-width-inner' ) ) };
+    }
+    padding: {
+        left: 0;
+        right: 0;
+    }
+}
+
+
+//class to extend for skinny styles
+@include media('skinny-down') {
+    %skinny_collapse {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+// class to extend for mobile column styles
+@include media('mobile-only'){
+    %mobile_col{
+        // float: none;
+        // width: auto;
+        // padding-left: 0.5em;
+        // padding-right: 0.5em;
+    }
+
+    %mobile_col_no_padding {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .grid_spacer {
+     display: none;
+    }
+
+}
+
+@include media('mobile-only'){
+    %mobile_inner_col{
+        float: none;
+        width: auto;
+    }
+}
+
+
+// Used on the Case Study page for the "aside" image
+// Only on 'skinny-up' as on mobile, this breaks the
+// natural change for all columns to become full width
+%grid_right {
+    @include media('skinny-up') {
+        &[class*='grid_col'] { float: right; } // extra selector added to override default of "float: left;"
+    }
+}

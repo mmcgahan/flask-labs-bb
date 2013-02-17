@@ -1,0 +1,19 @@
+.posts_listing {
+    .post_listing {
+        &:before {
+            content: '';
+        }
+    }
+}
+
+.permalink {
+    display: block;
+}
+.post_listing {
+    .subheading {
+        font-size: 66%;
+    }
+    .pub-date {
+        margin-top: -0.5em;
+    }
+}
