@@ -1,0 +1,134 @@
+// _variables.scss
+//
+
+
+// Typography Defaults
+//----------------------------------
+
+// FONTS
+//----------------------------------
+
+$base-font-size: 16; //px
+$base-font-size-px: #{$base-font-size}px;
+$em: $base-font-size * 1;
+
+$base-font-serif: Merriweather;
+$base-font-serif-backup: Georgia, serif;
+$base-font-serif-stack: $base-font-serif, $base-font-serif-backup;
+
+$base-font-sans: "Open Sans";
+$base-font-sans-backup: Helvetica, Arial, sans-serif;
+$base-font-sans-stack: $base-font-sans, $base-font-sans-backup;
+
+$base-font-monospaced-stack: 'Courier New', Courier, monospace;
+
+$base-font: $base-font-sans;
+$base-font-backup: $base-font-sans-backup;
+$base-font-stack: $base-font-sans-stack;
+$base-font-weight: 400;
+$word-spacing: 0;
+
+
+// COLOURS - colour swatch mockup http://clients.springload.co.nz/springload/site-redesign-2012/colour.html
+//         - taken from /SL365-website-2011/SL site Eileen/colour-pallette.psd
+//----------------------------------
+
+// Pallette
+$navy: #2a4463;
+$fuschia: #bd1347;
+$green: #809a53;
+$light-green: #9abd60;
+
+$purple: #7d3779;
+$dark-purple: #80447c;
+$aqua: #82DBCB;
+$dark-aqua: #61d8c2;  // used for the text color
+
+$teal: #81d2c4;  // let's sort out which of these blues are actually needed..
+$dark-teal: #2a7b85;
+$blue: #37b2cd;
+$light-teal: tint($blue, 80%);
+$pale-blue: #bee2ea;
+$very-pale-blue: #eff9fb;
+$another-blue: #1c8aa5;
+$bright-blue: #23b6e6;
+$light-blue: #90cfec;
+
+$amber: #FFA500;
+$red: #e0001a;
+
+// Shades
+$white: #fff;
+$white-trans: rgba(255, 255, 255, 0.7);
+$black: #1D2624;
+$black-trans: rgba(22, 22, 22, 0.8);
+$charcoal: #2c2d2f; // nav background
+$charcoal-highlight: #494b4d; // border on nav background
+
+$gray-dark: #3b3a3a;
+$gray: #95999a;
+$gray-light: #d6d6d6;
+$gray-lighter: #f4f4f4;
+$gray-lightest: #fafafa;
+$gray-medium: #6d6d6d; // mobile nav contact details
+
+
+// APPPLIED COLOURS
+//----------------------------------
+
+$color-bg: $white;
+$color_border: $gray-light;
+$color-text: $gray-dark;
+$color-text_light: $gray;
+$color-heading: darken($gray-dark, 5%);
+
+$color-links: $dark-teal;
+$color-links_hover: darken($color-links, 20%);
+$color-links_visited: lighten($color-links, 5%);
+
+$color-selection-text: $black;
+$color-selection-bg: $gray-light;
+
+
+// BUTTONS
+//----------------------------------
+$button_base_class: 'btn';
+$button-border-radius: 0;
+$button-padding: 10; //px
+$button_line_height: 1; //em
+$button_font_size: 15;
+$button_font_weight: 700;
+
+$button_color: $white;
+$button_background: $teal;
+$button_background_hover: darken($teal, 5%);
+
+$button_padding: 7; //px
+$button_icon_padding: 12; //px
+$button_padding_large: 20; //px
+$button_font_size: 15; //px
+
+$link_transition_timing: 0.3s;
+
+
+// MESSAGES
+//----------------------------------
+$message_base_class: '.message';
+
+
+// ERRORS AND WARNINGS
+//----------------------------------
+$color_warning_text: $amber;
+$color_warning_background: $amber;
+$color_error_text: $red;
+$color_error_background: $red;
+$color_success_text: $green;
+$color_success_background: $green;
+
+
+// TRANSITIONS
+//----------------------------------
+
+$transition-duration: 0.3s;
+
+

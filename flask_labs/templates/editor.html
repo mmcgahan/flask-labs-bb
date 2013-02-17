@@ -1,0 +1,12 @@
+{% extends "sub.html" %}
+{% block content -%}
+    <form action="POST">
+        {{ editor_form.hidden_tag() }}
+        {{ editor_form.title.label }}
+        {{ editor_form.title }}
+        {{ editor_form.markdown }}
+        {{ editor_form.html }}
+        {{ editor_form.author }}
+        {{ editor_form.submit }}
+    </form>
+{%- endblock %}

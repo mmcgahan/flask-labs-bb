@@ -1,0 +1,33 @@
+// _nav.scss
+// ---------
+
+
+#site_nav {
+    text-align: right;
+}
+#site_nav, #footer_nav {
+    .site_nav_item {
+        &:before {
+            content: '';
+        }
+    }
+}
+.site_nav_item {
+    display: inline-block;
+}
+.site_nav_link {
+    @extend %type-serif;
+    color: $black;
+    display: block;
+    padding: .2em 0 1em;
+    margin: 0 1em;
+    border-top: 5px solid transparent;
+    &.current {
+        color: $color-links;
+        border-color: tint($color-links, 70%);
+    }
+}
+
+#footer_nav {
+    text-align: center;
+}

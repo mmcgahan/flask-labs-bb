@@ -1,0 +1,33 @@
+// _on-media-query.scss
+// --------------------
+//
+// Used for oMQ.js
+
+body:after {
+    content: 'mobile';
+    display: none;
+}
+
+.ie6,
+.ie7,
+.ie8 {
+    font-family: 'desktop';
+}
+
+.ie8 body:after {
+    content: 'desktop';
+}
+
+/* Queries for supported browsers.
+ ----------------------------------- */
+html {
+    @include media(desktop-up) { font-family: 'desktop'; }
+    @include media(skinny-only) { font-family: 'skinny'; }
+    @include media(mobile-only) { font-family: 'mobile'; }
+}
+
+body:after {
+    @include media(desktop-up) { content: 'desktop'; }
+    @include media(skinny-only) { content: 'skinny'; }
+    @include media(mobile-only) { content: 'mobile'; }
+}

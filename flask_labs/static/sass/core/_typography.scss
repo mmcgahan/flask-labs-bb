@@ -1,0 +1,413 @@
+// _typography.scss
+// -------------------------------------------------------------
+
+$base-line-height:              28; //px
+$line-height-standard:          1.5;
+$line-height-heading:           1;
+
+
+// Default typographic scales......
+// zero-based when calling type-scale
+//             0  1  2  3  4  5  6  7  8
+$type-scales: 13 15 16 18 20 25 32 40 48;
+// base             16
+
+%scale-0 {
+    font-size: px-to-em(nth($type-scales, 1));
+}
+
+%scale-1 {
+    font-size: px-to-em(nth($type-scales, 2));
+}
+
+%scale-2 {
+    font-size: px-to-em(nth($type-scales, 3));
+}
+
+%scale-3 {
+    font-size: px-to-em(nth($type-scales, 4));
+}
+
+%scale-4 {
+    font-size: px-to-em(nth($type-scales, 5));
+}
+
+%scale-5 {
+    font-size: px-to-em(nth($type-scales, 6));
+}
+
+%scale-6 {
+    font-size: px-to-em(nth($type-scales, 7));
+}
+
+%scale-7 {
+    font-size: px-to-em(nth($type-scales, 8));
+}
+
+@mixin type-scale($num: 1, $in-query: false) {
+    @if $in-query == true {
+        font-size: px-to-em(nth($type-scales, $num+1));
+    } @else {
+        @extend %scale-#{$num};
+    }
+}
+
+%type-primary {
+    @extend %type-light;
+}
+%type-serif {
+    font-family: $base-font-serif-stack;
+    @extend %type-light;
+}
+%type-sans {
+    font-family: $base-font-sans-stack;
+}
+
+%type-thin {
+    @include font($font-weight: 200);
+}
+%type-light {
+    @include font($font-weight: 300);
+    -webkit-font-smoothing: antialiased;
+}
+%type-regular {
+    @include font($font-weight: 400);
+}
+%type-medium {
+    @include font($font-weight: 500);
+}
+%type-bold {
+    @include font($font-weight: 700);
+}
+strong {
+    @extend %type-bold;
+}
+
+%type-black {
+    @include font($font-weight: 900);
+}
+%type-italic {
+    font-style: italic;
+}
+%type-antialiased {
+    -webkit-font-smoothing: antialiased;
+}
+
+%text-teal {
+    color: $teal;
+}
+
+%text-color-base {
+    color: $color-text;
+}
+
+// -------------------------------------------------------------
+
+body {
+    @include font($font-family: $base-font-stack, $font-weight: $base-font-weight, $font-style: normal);
+    @include type-scale(2);
+    word-spacing: $word-spacing;
+    line-height: $line-height-standard;
+}
+h1, h2, h3, h4, h5, h6 {
+    @extend %type-serif;
+    margin: 1em 0 .3em;
+
+    + p {
+        margin-top: 0;
+    }
+}
+h2, h4, h6,
+.h2, .h4, .h6 {
+    @extend %type-regular;
+}
+h1 {
+    @extend %type-light;
+    @include type-scale(7);
+    line-height: 1.25;
+}
+h2 {
+    @include type-scale(5);
+}
+h3 {
+    @include type-scale(4);
+    p + & {
+        margin-top: 2em;
+    }
+
+}
+h4 {
+    @include type-scale(3);
+}
+
+h5 {
+    @extend %type-medium;
+    @include type-scale(3);
+}
+h6 {
+    @include type-scale(0);
+    text-transform: uppercase;
+}
+#logo_heading {
+    @include hide-text;
+    margin: 0;
+}
+#title {
+    margin-bottom: 1.5em;
+}
+
+// -------------------------------------------------------------
+
+ul, ol {
+    margin: 0 0 .5em;
+}
+.standard_list {
+    list-style-type: disc;
+    padding-left: 2em;
+    li {
+        vertical-align: middle;
+        padding: .2em .5em;
+    }
+}
+.standard_list {
+    list-style-type: decimal;
+}
+
+
+
+
+
+// Links.
+// ---------
+
+a {
+    @include transition(color $link_transition_timing);
+    text-decoration: none;
+    color: $color-links;
+
+    &:hover,
+    a:active,
+    &:focus {
+        color: $color-links_hover;
+        outline: 0;
+        @include transition(color 0s); // having transition only on hover prevents sluggish fade-in, but maintains restful fade-out
+    }
+}
+
+/*
+Type-A-File "Swissface" designed by Russ Maschmeyer, aka StrangeNative.
+http: //www.strangenative.com
+@strangenative
+
+Creative Commons License by Attribution.
+Feel free to take it, adapt it, & use it on both commercial and non-commercial projects.
+Though I'd like a smidgeon of credit, so just leave this bit in here. K?
+*/
+
+// h1, h2, h3, h4, h5, h6, .header, .subheader, .head, .subhead, .pullquote, .kicker {
+//     font-weight:  200;
+//     @extend %serif;
+// }
+// h1 {
+//     font-size: 2.285em;
+//     line-height: 1.2em;
+// }
+// h2 {
+//     font-size: 1.4em;
+//     padding-top: .1em;
+//     margin: 0 0 .8em;
+// }
+// h3 {
+//     font-size: 1.125em;
+// }
+// h4 {
+//     font-weight:bold;
+//     font-size: 1em;
+// }
+p:first-child {
+    margin-top: 0;
+}
+ul {
+    list-style-type: none;
+}
+ol {
+    list-style-position: outside;list-style-type: decimal;
+}
+ul li:before, cite:before {
+  content:'\2053';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -1.5em;
+  top: 0;
+  color: $color_links;
+  font-size: .9em;
+}
+code {
+    background: #f7f7f7;
+    font: Consolas, Menlo, 'Liberation Mono', Courier, monospace;
+    border: 1px solid #ccc;
+    margin: 0 2px;
+    padding: 0 5px;
+}
+blockquote {
+    font-style: italic;
+    line-height: 1.4em;
+    &:before {
+        content:  "“";
+        font-size: 4em;
+        font-family: Times, serif;
+        text-indent: -.6em;
+        margin-top: .15em;
+        float: left;
+    }
+}
+cite {
+    display:block;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: .8em;
+    margin-top: .5em;
+}
+pre {
+    margin: 1.5em 0;
+}
+dl {
+    margin: 1.45em 0;
+}
+dt {
+    word-spacing: .1em;
+    border-bottom: 1px dotted $gray;
+    margin-top: 1.7em;
+    font-weight:bold;
+    text-transform: uppercase;
+    font-size: .9em;
+    letter-spacing: 1px;
+    &:before {
+        content: "⟩";
+        font-size: 1em;
+        text-indent: -1em;
+        line-height: 1.4em;
+        float: left;
+        font-style: none;
+        font-weight: normal;
+    }
+}
+dd {
+    font-style: italic;
+    font-size: .9em;
+    margin-bottom: 1.65em;
+    margin-left: 0;
+}
+abbr {
+    text-transform: uppercase;
+    font-size: .85em;
+}
+p {
+    hyphenate:  auto;
+    hyphenate-before: 2;
+    hyphenate-after: 3;
+    hyphenate-lines:  3;
+    orphans: 4
+}
+.kicker {
+    font-size: 1.33em;
+    line-height: 1.8em;
+    font-style: italic;
+    margin: 1.75em 0 -.25em;
+}
+.run-in {
+    font-weight:bold;
+}
+.superscript, .subscript {
+    @extend %type-sans;
+    vertical-align: super;
+    font-size: 75%;
+    line-height: 0em;
+}
+.subscript {
+    vertical-align: sub;
+}
+aside, .sidenote, #sidebar {
+    text-align: left;
+    float: left;
+    font-size: .83em;
+    font-style: italic;
+    font-weight: 400;
+    p {
+        color: #666;
+        margin: 0;
+        line-height: 1.4em;
+    }
+    p + p {
+        margin: 1.9em 0;
+    }
+    ul, ol {
+        margin-top: 1.9em;
+    }
+}
+aside, .sidenote {
+    width: 15em;
+    margin-left: -18em;
+    margin-top: 1.5em;
+    h3 {
+        // h3 should be maximum heading level for asides - articles get h1 and h2
+        color: $color-links;
+        // override aside's italic
+        font-style: normal;
+        @include type-scale(3);
+    }
+}
+.pullquote {
+    margin: .45em .5em 0 0;
+    padding-top: .45em;
+    line-height: 1.58em;
+    display:block;
+    float: left;
+    font-size: 2em;
+    width: 50%;
+    border-top: .15em solid black;
+}
+.footnote {
+    border-top: 1px solid black;
+    font-size: .75em;
+    margin-top: 3.7em;
+    li {
+        margin: .6em 0 2.1em;
+    }
+}
+.caption {
+    font-size: .9em;
+    line-height: 1.4em;
+    color: #666;
+    font-style: italic;
+    margin: .6em 0 -.2em;
+    padding-left: 1em;
+    border: 2px solid $color_links;
+    border-width: 0 0 0 2px;
+    h2 {
+        font-size: 1.2em;
+        color: darken($color_links, 5%);
+        font-style: none;
+    }
+}
+.section-heading {
+    margin: 0;
+    font-size: 15em;
+    line-height: 1;
+    a {
+        color: $gray-lighter;
+    }
+}
+
+/*Tweaks*/
+.kern {
+    letter-spacing: -.1em;
+}
+
+
+
+

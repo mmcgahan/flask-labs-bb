@@ -1,0 +1,29 @@
+<div class="grid_col_3"><h1 id="title">{{ section.name }}</h1>
+    </div>
+<div class="grid_col_9">
+    <ul class="posts_listing">
+    {{#each section.posts}}
+    <li class="post_listing">
+        <h2 class="post_title">
+            <a class="permalink" href="{{ uri }}">
+                <span class="post_heading">{{ title }}</span><br>
+                {{#if subtitle}}
+                <span class="subheading">{{ subtitle }}</span>
+                {{/if}}
+            </a>
+        </h2>
+        <div class="pub-date">{{ create_date.date }}</div>
+        {{#if tags}}
+            <ul class="tags">
+            {{#each tags }}
+                <li class='tag'>{{ this }}</li>
+            {{/each}}
+            </ul>
+        {{/if}}
+
+        {{#if teaser}}<p class="teaser">{{ teaser }}</p>{{/if}}
+    </li>
+    {{/each}}
+
+    </ul>
+</div>

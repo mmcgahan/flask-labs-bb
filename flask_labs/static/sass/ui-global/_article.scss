@@ -1,0 +1,17 @@
+article, .article {
+    .right {
+        margin-left: 2em;
+    }
+    .subheading {
+        @include type-scale(4);
+        color: $color-links;
+        // @extend %type-light;
+        margin: -3em 0 2em;
+    }
+
+}
+
+.pub-date {
+    @extend %type-serif;
+    color: $color-links;
+}

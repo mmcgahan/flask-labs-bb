@@ -1,0 +1,9 @@
+*/articles/*
+*/static/.sass-cache/*
+labs.cfg
+
+# Compiled source #
+*.pyc
+
+# Mac files #
+.DS_Store

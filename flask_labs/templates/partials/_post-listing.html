@@ -1,0 +1,17 @@
+<li class="post_listing">
+    <h2 class="post_title">
+        <a class="permalink" href="{{ url_for('post', section_slug=section.slug, post_slug=post.slug) }}">
+            <span class="post_heading">{{ post.title }}</span><br>
+            {% if post.subtitle -%}
+            <span class="subheading">{{ post.subtitle }}</span>
+            {%- endif %}
+        </a>
+    </h2>
+    <div class="pub-date">{{ post.create_date|dateformat }}</div>
+    <ul class="tags">
+        {% if post.tags %}
+            <li class='tag'>{{ post.tags|join('</li><li>')|safe }}</li>
+        {% endif %}
+    </ul>
+    {% if post.teaser %}<p class="teaser">{{ post.teaser }}</p>{% endif %}
+</li>

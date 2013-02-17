@@ -1,0 +1,19 @@
+<div class="grid_col_3">&nbsp;</div>
+    <article id='post' class="grid_col_9">
+    <header>
+        <aside class="pub-date">DATE</aside>
+        <h1 id="title">{{ post.title }}</h1>
+        {{#if post.subtitle }}
+          <h2 class="subheading">{{ post.subtitle }}</h2>
+        {{/if}}
+        {{#if post.quote }}
+        <div id="quotation">
+            <blockquote id="header-quote">{{ post.quote.quote }}</blockquote>
+            <cite id="header-cite">{{ post.quote.source }}</cite>
+        </div>
+        {{/if}}
+    </header>
+    <div id="copy">
+        {{{ post.html }}}
+    </div>
+</article>

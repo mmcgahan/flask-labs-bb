@@ -1,0 +1,293 @@
+/* ------------------------------------------------------------------- *
+ |  TYPE:           Mixin
+ |  AUTHOR(S):      Josh, Frej, MikeM
+ |  DATE CREATED:   18/09/2012
+ |  DATE UPDATED:   12/12/2012
+ |  DESCRIPTION:    Sprites mixin
+ |                  Supports hi-res backgrounds
+ |
+ * ------------------------------------------------------------------- *
+    EXAMPLE
+    -------
+
+    STEP 1)
+    Creating the sprite (only call once per sprite):
+
+        All options:
+        ------------
+
+        @include make-sprite(
+                    $folder-name:       'base',
+                    $use-retina:        true,
+                    $sprite-spacing:    8
+                )
+
+
+        Simple use:
+        -----------
+
+        @include make-sprite( $folder-name: 'base', $use-retina: true );
+
+
+    STEP 2)
+    Using the sprite:
+
+        All options:
+        ------------
+
+        .box1 {
+            @include background-sprite(
+                                        $folder-name:   'base',
+                                        $image-name:    'icon-mobile-menu',
+                                        $offset-x:      0px,
+                                        $offset-y:      0px,
+                                        $use-retina:    true,
+                                        $print-dimensions: false
+                                    );
+        }
+
+        Simple use:
+        -----------
+
+        .box2 {
+            @include background-sprite( 'base', 'icon-app-store' );
+        }
+
+
+    SPRITE IMAGE WIDTH & HEIGHT
+    ---------------------
+
+    .box1{
+        width: sprite-width( 'base', 'icon-app-store' );
+        height: sprite-height( 'base', 'icon-app-store' );
+    }
+
+
+ * ------------------------------------------------------------------- */
+
+
+// Sprite defaults
+// -------------------------------------------------------------
+
+$sprite-selector: '*.png'; // Spriting is only supported for .png (based on chunky png gem)
+$sprite-spacing: 4;
+$sprite-1x-folder: '1x';
+$sprite-2x-folder: '2x';
+$sprite-prefix: 'sprite';
+$sprite-path: 'sprites/';
+
+/* ------------------------------------------------------------- *
+    Sprite store
+    All generated sprites will be put in this array:
+    ( folder name, spacing, sprite-map, sprite-map-retina )
+   ------------------------------------------------------------- */
+
+$sprite-store: () !default;
+
+/* ------------------------------------------------------------- *
+    The make-sprite mixin will add items to this list
+    To see the content on the list, add this line of SCSS to the bottom of screen.scss:
+
+// body{
+//     &:before{
+//         @if length($sprite-store) > 0{
+//             content: "#{ $sprite-store }";
+//         } @else {
+//             content: "No sprites created yet";
+//         }
+//         display: block;
+//         position: absolute;
+//         top: 0;
+//         width: 100%;
+//         padding: 1em;
+//         background: #CCC;
+//         z-index: 999;
+//     }
+// }
+
+   ------------------------------------------------------------- */
+
+
+
+// -------------------------------------------------------------
+// Helper Functions
+// -------------------------------------------------------------
+
+
+// Function to return a sprite map from a folder name
+// -------------------------------------------------------------
+@function return-sprite-map(
+        $folder-name,
+        $retina-version: false,
+        $sprite-spacing: $sprite-spacing
+    ) {
+
+    $sprite-map: false;
+
+    // Checking for stored spacing
+    @each $sprite in $sprite-store {
+        @if ( nth( $sprite, 1 ) == $folder-name ){
+            @if $retina-version == false {
+                $sprite-map: nth( $sprite, 3 );
+            } @else {
+                $sprite-map: nth( $sprite, 4 );
+            }
+        }
+    } // end each
+
+    // Creating sprite map if not available in store
+    @if $sprite-map == false {
+        $sprite-folder: $sprite-1x-folder;
+        @if $retina-version {
+            $sprite-folder: $sprite-2x-folder;
+        }
+        $sprite-map:    sprite-map( '#{ $sprite-path }#{ $folder-name }/#{ $sprite-folder }/#{ $sprite-selector }',
+                        $spacing: $sprite-spacing,
+                        $repeat: no-repeat );
+    } // end if
+
+    @return $sprite-map;
+
+}
+
+
+// Function to return the spacing of an existing sprite
+// -------------------------------------------------------------
+@function return-sprite-spacing( $folder-name ){
+
+    $current-sprite-spacing: $sprite-spacing;
+
+    // Checking for stored spacing
+    @each $sprite in $sprite-store {
+        @if ( nth( $sprite, 1 ) == $folder-name ){
+            $current-sprite-spacing: nth( $sprite, 2 );
+        }
+    } // end each
+
+    @return $current-sprite-spacing;
+}
+
+
+// Function to return the width of an image in a sprite
+// -------------------------------------------------------------
+@function sprite-width( $folder-name, $icon, $retina-version: false ){
+    @return image-width( sprite-file( return-sprite-map( $folder-name, $retina-version ), $icon) );
+}
+
+
+// Function to return the height of an image in a sprite
+// -------------------------------------------------------------
+@function sprite-height( $folder-name, $icon, $retina-version: false ){
+    @return image-height( sprite-file( return-sprite-map( $folder-name, $retina-version ), $icon ) );
+}
+
+
+// Local media query mixin
+// -------------------------------------------------------------
+@mixin media-retina {
+    @media  only screen and (-moz-min-device-pixel-ratio: 2),
+            only screen and (-o-min-device-pixel-ratio: 2/1),
+            only screen and (-webkit-min-device-pixel-ratio: 2),
+            only screen and (min-device-pixel-ratio: 2)
+    {
+        @content;
+    }
+}
+
+
+// Mixin to create sprites
+// -------------------------------------------------------------
+
+@mixin make-sprite(
+                    $folder-name,
+                    $use-retina:        true,
+                    $sprite-spacing:    $sprite-spacing
+                ) {
+
+    $sprite: return-sprite-map( $folder-name, $retina-version: false, $sprite-spacing: $sprite-spacing );
+
+    $sprite-retina: false;
+
+    // make a generic class so we only have one @media declaration per sprite that every selector extends.
+
+    %#{ $sprite-prefix }-#{ $folder-name } {
+        background-image: sprite-url( $sprite );
+        background-repeat: no-repeat;
+    }
+
+    @if ( $use-retina == true ) {
+
+        // Declare the retina asset
+        $sprite-retina: return-sprite-map( $folder-name, $retina-version: true, $sprite-spacing: $sprite-spacing * 2 );
+
+        // Call it in for the class.
+        %#{ $sprite-prefix }-#{ $folder-name } {
+            @include media-retina {
+                    background-image: sprite-url( $sprite-retina );
+                    $w: image-width( sprite-clean-url( $sprite-retina ) ) / 2;
+                    background-size:  $w  auto;
+            }
+        }
+
+    }
+
+    // Storing sprite data
+    // This is necessary when calling a sprite,
+    // as a sprite might have a custom spacing
+    $sprite-store: append( $sprite-store, ( $folder-name $sprite-spacing $sprite $sprite-retina ), comma );
+
+} // end
+
+
+// Mixin to use the sprite
+// -------------------------------------------------------------
+
+@mixin background-sprite(
+        $folder-name,
+        $image-name,
+        $offset-x: 0,
+        $offset-y: 0,
+        $use-retina: true,
+        $print-dimensions: false
+    ) {
+
+    // Assuming the make-sprite mixin has been called first
+    @extend %#{ $sprite-prefix }-#{ $folder-name };
+
+    $current-sprite-spacing: return-sprite-spacing( $folder-name );
+
+    $sprite: return-sprite-map( $folder-name, $retina-version: false, $sprite-spacing: $current-sprite-spacing );
+
+    @if ( $print-dimensions == true ) {
+        width: sprite-width( $folder-name, $image-name );
+        height: sprite-height( $folder-name, $image-name );
+    }
+
+    background-position: sprite-position( $sprite, $image-name, $offset-x, $offset-y );
+
+
+
+    @if ( $use-retina == true ) {
+        $sprite-retina: return-sprite-map(
+            $folder-name,
+            $retina-version: true,
+            $sprite-spacing: $current-sprite-spacing * 2
+        );
+
+        $sprite-y-pos: nth( sprite-position( $sprite, $image-name ), 2 );
+        $sprite-retina-y-pos: nth( sprite-position( $sprite-retina, $image-name ), 2 ) / 2;
+
+        @include media-retina {
+            @if ( $sprite-y-pos != $sprite-retina-y-pos ) {
+                $sprite-retina-x-pos: nth( sprite-position( $sprite-retina, $image-name ), 1 ) / 2;
+
+                $xpos: round( $sprite-retina-x-pos );
+                $ypos: round( $sprite-retina-y-pos );
+                $x_adjusted: $xpos +  $offset-x;
+                $y_adjusted: $ypos +  $offset-y;
+                background-position: $x_adjusted $y_adjusted;
+             }
+        }
+    }
+
+}

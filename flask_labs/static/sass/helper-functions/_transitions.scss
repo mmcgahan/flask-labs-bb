@@ -1,0 +1,41 @@
+/* ------------------------------------------------------------------- *
+ |  TYPE:           Mixin
+ |  AUTHOR(S):      MikeM
+ |  DATE CREATED:   18/12/2012
+ |  DATE UPDATED:   18/12/2012
+ |  DESCRIPTION:    CSS3 Transition mixins
+ |
+ |  EXAMPLE:        fade out with a position change:
+ |                  @include fade($type: 'out', $additional-transition: left 0.5s ease-in);
+ |
+ * ------------------------------------------------------------------- */
+
+%transition-transparent {
+    opacity: 0;
+    visibility: hidden;
+}
+%transition-opaque {
+    opacity: 1;
+    visibility: visible;
+}
+@mixin fade($type: 'out', $fade-delay: 0s, $additional-transition: false) {
+    // assume fadeOut
+    $opacity-transition: opacity $transition-duration ease-out $fade-delay;
+    $visibility-transition: visibility 0s ease ($transition-duration + $fade-delay);
+
+    @include transform(translate3d(0,0,0));
+    @if ($type == 'in') {
+        @extend %transition-opaque;
+        $opacity-transition: opacity $transition-duration ease $fade-delay;
+        $visibility-transition: visibility 0s ease $fade-delay;
+    } @else {
+        // assume fadeOut
+        @extend %transition-transparent;
+    }
+
+    @if ($additional-transition) {
+        @include transition($additional-transition, $opacity-transition, $visibility-transition);
+    } @else {
+        @include transition($opacity-transition, $visibility-transition);
+    }
+}

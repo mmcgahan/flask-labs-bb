@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block hero -%}
+    <div id="hero" class="grid_row" style="background-image: url({{ url_for('static', filename='images/articles/' + lead.lead_img) }});">
+        <div class="grid_col_7">&nbsp;</div>
+        <div class="grid_col_5">
+            <div id="hero_content">
+                <p id="breadcrumb">Recent entry &raquo; {{ lead.section.name }}</p>
+                <h2 id="leadtitle">{{ lead.title }}</h2>
+                <p class="pub-date">{{ lead.create_date|dateformat }}</p>
+                <p>{{ lead.teaser }}</p>
+            </div>
+        </div>
+    </div>
+{%- endblock hero %}
+{% block primary_content %}
+    {% for section in g.sections -%}
+    <div class="grid_row section">
+        <div class="grid_col_3 section-icon {{ section.name|lower }}-icon">
+            <h1 class="section-heading"><a href="{{ url_for('section', section_slug=section.slug) }}">{{ section.name }}</a></h1>
+        </div>
+        <div class="grid_col_9 section-posts" id="{{ section.name|lower }}">
+            <ul class="posts_listing">
+                {% for post in section.posts -%}
+                {% include "partials/_post-listing.html" %}
+                {%- endfor %}
+            </ul>
+        </div>
+    </div>
+    {%- endfor %}
+{% endblock primary_content %}

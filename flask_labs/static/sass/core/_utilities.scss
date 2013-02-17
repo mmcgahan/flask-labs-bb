@@ -1,0 +1,267 @@
+// UTILITY CLASSES
+// -------------------------------------------------------------
+
+// Toggling content
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+
+// Media query related toggle
+%desktop-up {
+    @include media('skinny-down') { display: none; }
+}
+
+%skinny-up {
+    @include media('mobile-only') { display: none; }
+}
+
+
+
+// Visibility
+.invisible {
+  visibility: hidden;
+}
+
+
+@mixin clearfix {
+    .ie6 &,
+    .ie7 & { zoom: 1; }
+
+    &:after,
+    &:before {
+        content: "";
+        display: table;
+    }
+
+    &:after { clear: both; }
+}
+
+.clearfix { @include clearfix; }
+
+
+
+.alt_clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+
+// Block level inputs
+@mixin input-block-level {
+    display: block;
+    width: 100%;
+    min-height: 28px;        // Make inputs at least the height of their button counterpart
+//    @include box-sizing(border-box); // Makes inputs behave like true block-level elements
+}
+
+
+// Mixin for form field states
+@mixin formFieldState($textColor: #555, $borderColor: #ccc, $backgroundColor: #f5f5f5) {
+    // Set the text color
+    //> label,
+    .controls .help-block,
+    .controls .help-inline {
+        color: $textColor;
+    }
+
+    // Style inputs accordingly
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    select,
+    textarea {
+        color: $textColor;
+        border-color: $borderColor;
+        &:focus {
+            border-color: darken($borderColor, 10%);
+            @include box-shadow(0 0 6px lighten($borderColor, 20%));
+        }
+    }
+
+    // Give a small background color for input-prepend/-append
+    .input-prepend .add-on,
+    .input-append .add-on {
+        color: $textColor;
+        background-color: $backgroundColor;
+        border-color: $textColor;
+    }
+}
+
+
+// Webkit-style focus
+// ------------------
+@mixin tab-focus() {
+    // Default
+    outline: thin dotted #333;
+    // Webkit
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+// Center-align a block level element
+// ----------------------------------
+@mixin center-block() {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+// IE7 inline-block
+// ----------------
+@mixin ie7-inline-block() {
+    *display: inline; // IE7 inline-block hack
+    *zoom: 1;
+}
+
+// IE7 likes to collapse whitespace on either side of the inline-block elements.
+// Ems because we're attempting to match the width of a space character. Left
+// version is for form buttons, which typically come after other elements, and
+// right version is for icons, which come before. Applying both is ok, but it will
+// mean that space between those elements will be .6em (~2 space characters) in IE7,
+// instead of the 1 space in other browsers.
+@mixin ie7-restore-left-whitespace() {
+    *margin-left: .3em;
+
+    &:first-child {
+        *margin-left: 0;
+    }
+}
+
+@mixin ie7-restore-right-whitespace() {
+    *margin-right: .3em;
+
+    &:last-child {
+        margin-left: 0;
+    }
+}
+
+
+// Sizing shortcuts
+// -------------------------
+@mixin size($height: 5px, $width: 5px) {
+    width: $width;
+    height: $height;
+}
+@mixin square($size: 5px) {
+    @include size($size, $size);
+}
+
+// Placeholder text
+// -------------------------
+@mixin placeholder($color: $placeholderText) {
+    :-moz-placeholder {
+        color: $color;
+    }
+    ::-webkit-input-placeholder {
+        color: $color;
+    }
+}
+
+// Text overflow
+// -------------------------
+// Requires inline-block or block for proper styling
+@mixin text-overflow() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// CSS image replacement
+// -------------------------
+// Source: https://github.com/h5bp/html5-boilerplate/commit/aa0396eae757
+@mixin hide-text {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+
+.hide_text {
+    @include hide-text();
+}
+
+
+
+// Prevent text wrapping
+// -------------------------
+@mixin no_wrap {
+    white-space: nowrap;
+}
+
+.no_wrap {
+    @include no_wrap;
+}
+
+
+// Override display setting
+// -------------------------
+@mixin inline {
+    display: inline;
+}
+.inline {
+    @include inline;
+}
+
+@mixin block {
+    display: block;
+}
+.block {
+    @include block;
+}
+
+
+// Positioning
+// -------------------------
+%float-right {
+    float: right;
+}
+
+
+%flaot-left {
+    float: left;
+}
+
+
+// Show / Hide
+// -------------------------
+@mixin hide {
+    display: none;
+}
+
+
+@mixin show {
+    display: block;
+}
+
+// Margins / Padding
+// -------------------------
+@mixin no_margin { margin: 0 !important; }
+.no_margin       { @include no_margin; }
+
+@mixin no_padding { padding: 0 !important; }
+.no_padding       { @include no_padding; }
+
+.add_top          { padding-top: 1.5em; }
+
+.white_fade {
+    //background-image: inline-image('/white-fade.png');
+    background-repeat: repeat-x;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 64px;
+    .ie6 &,
+    .ie7 & {
+        //background-image: url('/white-fade.png');
+    }
+}
